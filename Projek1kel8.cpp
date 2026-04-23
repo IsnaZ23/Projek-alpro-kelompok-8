@@ -63,8 +63,8 @@ int main() {
         <<"================================= \n";
     cout<<"1. Input Data \n"
         <<"2. Tampil Data \n"
-        <<"3. Searching \n"
-        <<"4. Sorting \n"
+        <<"3. Searching \n" //sequential, binary
+        <<"4. Sorting \n" //bubble, selection, insertion, merge, quick, shell
         <<"5. Exit \n"
         <<"================================= \n";
     cout<<"Pilih : ";
