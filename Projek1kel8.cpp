@@ -80,8 +80,10 @@ int main() {
     break;
     
     case 3:
+    cout << "Maaf pilihan anda tidak ada !";
     break;
-     cout << "Maaf pilihan anda tidak ada !";
+
+
     default:
     cout<<"Maaf tidak ada pilihan yang sesuai anda pilih !";
     break;
