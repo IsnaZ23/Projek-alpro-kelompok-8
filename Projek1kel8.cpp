@@ -79,6 +79,9 @@ int main() {
     lihatData();
     break;
     
+    case 3:
+    break;
+     cout << "Maaf pilihan anda tidak ada !";
     default:
     cout<<"Maaf tidak ada pilihan yang sesuai anda pilih !";
     break;
