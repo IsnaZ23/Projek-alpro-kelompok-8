@@ -11,6 +11,7 @@ typedef struct{
 }Kuitansi;
 Kuitansi dataKuitansi[100];
 
+// Isnan
 void inputData(){
     system("cls");
     cout<<"INPUT DATA \n "
