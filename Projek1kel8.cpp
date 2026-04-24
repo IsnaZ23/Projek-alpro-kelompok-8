@@ -236,14 +236,18 @@ void cariDataSequensial(){
     int cari;
     bool found = false;
     int i = 0;
-    int n;
+
+    if (n == 0){
+        cout << "Data kosong! Silakan input data terlebih dahulu.\n";
+        return;
+    }
 
     cout << "SEQUENSIAL SEARCH \n"
         <<"================================= \n";
     cout << "NoKuitansi yang anda cari : ";
     cin >> cari;
     
-    n = sizeof(dataKuitansi) / sizeof(dataKuitansi[0]);
+    // n = sizeof(dataKuitansi) / sizeof(dataKuitansi[0]);
     while (!found && i < n)
     {
         if (cari == dataKuitansi[i].NoKuitansi)
@@ -268,19 +272,45 @@ void cariDataSequensial(){
 void cariDataBinary(){
     int cari;
     bool found = false;
-    int i = 0;
-    int n;
+    int i, j, k;
+    j = n - 1;
+    i = 0;
 
     cout << "BINARY SEARCH \n"
         <<"================================= \n";
     cout << "NoKuitansi yang anda cari : ";
     cin >> cari;
+
+    bubbleSort(n, 1);
+    while ((!found) && (i <= j)){
+        k = (i + j) / 2;
+        if (cari == dataKuitansi[k].NoKuitansi){
+            cout << "Data anda sudah ditemukan ! \n";
+           cout << "No Kuitansi \t: " << dataKuitansi[k].NoKuitansi << endl;
+           cout << "Tanggal \t: " << dataKuitansi[k].Tanggal << endl;
+           cout << "Nama Toko \t: " << dataKuitansi[k].NamaToko << endl;
+           found = true;
+        }
+        else 
+        {
+            if (cari < dataKuitansi[i].NoKuitansi)
+            j = k - 1;
+            else i = k + 1;
+        }
+
+    }
+    if (!found)
+    {
+        cout << "NoKuitansi yang anda cari: " << cari << endl;
+        cout << cari << " tidak ditemukan ! \n";
+    }
 }
 
 int main() {
     int pilih;
     char y;
     int pilihSearching;
+    bool kembaliMenuUtama = true;
 
     do{
     cout<<"MENU : \n"
@@ -329,13 +359,26 @@ int main() {
     sortingData();
     break;
 
+    case 5:
+    kembaliMenuUtama = false;
+    break;
+
     default:
     cout<<"Maaf tidak ada pilihan yang sesuai anda pilih !";
     break;
     }
 
-    cout<<"Apakah anda ingin mengulang ? (y/t) : ";
-    cin>>y;
-    } while (y == 'Y' || y == 'y');
+    if (kembaliMenuUtama == true)  {
+        cout<<"Apakah anda ingin mengulang ? (y/t) : ";
+        cin>>y;
+
+        if(y != 'y' && y != 'Y') {
+            cout << "Terima kasih !";
+            kembaliMenuUtama = false;
+        }
+    }
+
+    } while (kembaliMenuUtama == true);
+    cout << "Terima kasih !";
     
 }
