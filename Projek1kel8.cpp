@@ -232,9 +232,55 @@ void sortingData() {
     lihatData();
 }
 
+void cariDataSequensial(){
+    int cari;
+    bool found = false;
+    int i = 0;
+    int n;
+
+    cout << "SEQUENSIAL SEARCH \n"
+        <<"================================= \n";
+    cout << "NoKuitansi yang anda cari : ";
+    cin >> cari;
+    
+    n = sizeof(dataKuitansi) / sizeof(dataKuitansi[0]);
+    while (!found && i < n)
+    {
+        if (cari == dataKuitansi[i].NoKuitansi)
+        {
+           cout << "Data anda sudah ditemukan ! \n";
+           cout << "No Kuitansi \t: " << dataKuitansi[i].NoKuitansi << endl;
+           cout << "Tanggal \t: " << dataKuitansi[i].Tanggal << endl;
+           cout << "Nama Toko \t: " << dataKuitansi[i].NamaToko << endl;
+           found = true;
+        }
+        else i++;
+    
+    }
+    if (i == n)
+    {
+        cout << "NoKuitansi yang anda cari: " << cari << endl;
+        cout << cari << " tidak ditemukan ! \n";
+    }
+
+}
+
+void cariDataBinary(){
+    int cari;
+    bool found = false;
+    int i = 0;
+    int n;
+
+    cout << "BINARY SEARCH \n"
+        <<"================================= \n";
+    cout << "NoKuitansi yang anda cari : ";
+    cin >> cari;
+}
+
 int main() {
     int pilih;
     char y;
+    int pilihSearching;
 
     do{
     cout<<"MENU : \n"
@@ -258,7 +304,25 @@ int main() {
     break;
     
     case 3:
-    cout << "Bagian Reni";
+    cout << " MENU SEARCHING : \n ";
+    cout << "================================= \n ";
+    cout << " 1. SEQUENSIAL SEARCH \n " 
+         <<" 2. BINARY SEARCH \n "
+         <<" 3. kembali ke menu utama \n "
+         <<"================================= \n ";  
+    cout << "Pilih : ";
+    cin >> pilihSearching;
+    switch (pilihSearching){
+        case 1:
+        cariDataSequensial();
+        break;
+        case 2:
+        cariDataBinary();
+        break;
+        case 3: 
+        break;
+        default:
+        cout << "maaf pilihan yang anda pilih tidak tersedia ! ";}
     break;
 
     case 4:
