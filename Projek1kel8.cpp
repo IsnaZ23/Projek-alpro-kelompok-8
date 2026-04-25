@@ -337,8 +337,8 @@ int main() {
     cout << " MENU SEARCHING : \n ";
     cout << "================================= \n ";
     cout << " 1. SEQUENSIAL SEARCH \n " 
-         <<" 2. BINARY SEARCH \n "
-         <<" 3. kembali ke menu utama \n "
+         << " 2. BINARY SEARCH \n "
+         << " 3. kembali ke menu utama \n "
          <<"================================= \n ";  
     cout << "Pilih : ";
     cin >> pilihSearching;
@@ -349,7 +349,8 @@ int main() {
         case 2:
         cariDataBinary();
         break;
-        case 3: 
+        case 3:
+        
         break;
         default:
         cout << "maaf pilihan yang anda pilih tidak tersedia ! ";}
