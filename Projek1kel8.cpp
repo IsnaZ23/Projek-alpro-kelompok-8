@@ -232,6 +232,7 @@ void sortingData() {
     lihatData();
 }
 
+// Reni
 void cariDataSequensial(){
     int cari;
     bool found = false;
