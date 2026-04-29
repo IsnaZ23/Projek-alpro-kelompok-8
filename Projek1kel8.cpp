@@ -3,6 +3,7 @@
 #include <string>
 using namespace std;
 int n, i;
+bool y = true;
 
 typedef struct{
     int NoKuitansi;
@@ -11,7 +12,21 @@ typedef struct{
 }Kuitansi;
 Kuitansi dataKuitansi[100];
 
-// Isnan
+// Konfirmasi - Thio
+void konfirmasi() {
+    char konfirmasi;
+    cout << "Apakah anda ingin mengulang ? (y/t) : ";
+    cin >> konfirmasi;
+    if (konfirmasi == 'Y' || konfirmasi == 'y') {
+        system("cls");
+    } else {
+        cout << "Terima kasih telah menggunakan program ini!\n";
+        y = false;
+    }
+}
+// Batas Akhir - Thio
+
+// Input Data + Lihat Data - Isnan
 void inputData(){
     system("cls");
     cout<<"INPUT DATA \n "
@@ -36,6 +51,7 @@ void inputData(){
         getline(cin,dataKuitansi[i].NamaToko);
     }
     cout<<"===================================== \n";
+    konfirmasi();
 }
 
 void lihatData(){
@@ -54,53 +70,42 @@ else{
 }
 cout<<"==================================================== \n";
 }
+// Batas Akhir - Isnan
 
-// Ino
-// Fungsi pembantu untuk membandingkan data berdasarkan kriteria
-bool compare(Kuitansi a, Kuitansi b, int kriteria) {
-    if (kriteria == 1) return a.NoKuitansi > b.NoKuitansi; // Urutkan No Kuitansi
-    if (kriteria == 2) return a.Tanggal > b.Tanggal;       // Urutkan Tanggal
-    if (kriteria == 3) return a.NamaToko > b.NamaToko;     // Urutkan Nama Toko
-    return false;
-}
-
+// Sorting Data - Thio
 // Bubble
-void bubbleSort(int n, int kriteria) {
+void bubbleSort(int n) {
+
     for (int i = 0; i < n - 1; i++) {
         for (int j = 0; j < n - i - 1; j++) {
-            if (compare(dataKuitansi[j], dataKuitansi[j + 1], kriteria)) {
-                // Tukar data
-                Kuitansi temp = dataKuitansi[j];
-                dataKuitansi[j] = dataKuitansi[j + 1];
-                dataKuitansi[j + 1] = temp;
+            if (dataKuitansi[j].NoKuitansi > dataKuitansi[j + 1].NoKuitansi) {
+                swap(dataKuitansi[j], dataKuitansi[j + 1]);
             }
         }
     }
 }
 
 // Selection
-void selectionSort(int n, int kriteria) {
+void selectionSort(int n) {
+
     for (int i = 0; i < n - 1; i++) {
         int indexMin = i;
         for (int j = i + 1; j < n; j++) {
-            if (compare(dataKuitansi[indexMin], dataKuitansi[j], kriteria)) {
+            if (dataKuitansi[indexMin].NoKuitansi > dataKuitansi[j].NoKuitansi) {
                 indexMin = j;
             }
         }
-        // Tukar data terkecil ke posisi i
-        Kuitansi temp = dataKuitansi[i];
-        dataKuitansi[i] = dataKuitansi[indexMin];
-        dataKuitansi[indexMin] = temp;
+        swap(dataKuitansi[i], dataKuitansi[indexMin]);
     }
 }
 
 // Insert
-void insertionSort(int n, int kriteria) {
+void insertionSort(int n) {
+
     for (int i = 1; i < n; i++) {
         Kuitansi kunci = dataKuitansi[i];
         int j = i - 1;
-        // Geser data yang lebih besar ke kanan
-        while (j >= 0 && compare(dataKuitansi[j], kunci, kriteria)) {
+        while (j >= 0 && dataKuitansi[j].NoKuitansi > kunci.NoKuitansi) {
             dataKuitansi[j + 1] = dataKuitansi[j];
             j--;
         }
@@ -109,14 +114,13 @@ void insertionSort(int n, int kriteria) {
 }
 
 // Merge
-Kuitansi tempData[100]; // Array bantuan sementara
+Kuitansi tempData[100];
 
-void merge(int low, int mid, int high, int kriteria) {
+void merge(int low, int mid, int high) {
     int i = low, j = mid + 1, k = low;
     
-    // Bandingkan dan masukkan ke array bantuan
     while (i <= mid && j <= high) {
-        if (!compare(dataKuitansi[i], dataKuitansi[j], kriteria)) {
+        if (dataKuitansi[i].NoKuitansi <= dataKuitansi[j].NoKuitansi) {
             tempData[k] = dataKuitansi[i];
             i++;
         } else {
@@ -126,58 +130,51 @@ void merge(int low, int mid, int high, int kriteria) {
         k++;
     }
     
-    // Masukkan sisa data jika ada
     while (i <= mid) { tempData[k] = dataKuitansi[i]; i++; k++; }
     while (j <= high) { tempData[k] = dataKuitansi[j]; j++; k++; }
     
-    // Salin kembali ke array utama
     for (k = low; k <= high; k++) {
         dataKuitansi[k] = tempData[k];
     }
 }
 
-void mergeSort(int low, int high, int kriteria) {
+void mergeSort(int low, int high) {
     if (low < high) {
         int mid = (low + high) / 2;
-        mergeSort(low, mid, kriteria);      // Belah kiri
-        mergeSort(mid + 1, high, kriteria);  // Belah kanan
-        merge(low, mid, high, kriteria);     // Gabungkan
+        mergeSort(low, mid);      // Belah kiri
+        mergeSort(mid + 1, high);  // Belah kanan
+        merge(low, mid, high);     // Gabungin
     }
 }
 
 // Quick
-void quickSort(int low, int high, int kriteria) {
+void quickSort(int low, int high) {
     if (low < high) {
-        Kuitansi pivot = dataKuitansi[high]; // Ambil pivot dari elemen terakhir
+        Kuitansi pivot = dataKuitansi[high];
         int i = low - 1;
         
         for (int j = low; j < high; j++) {
-            if (!compare(dataKuitansi[j], pivot, kriteria)) {
+            if (dataKuitansi[j].NoKuitansi <= pivot.NoKuitansi) {
                 i++;
-                Kuitansi temp = dataKuitansi[i];
-                dataKuitansi[i] = dataKuitansi[j];
-                dataKuitansi[j] = temp;
+                swap(dataKuitansi[i], dataKuitansi[j]);
             }
         }
-        // Tukar pivot ke posisi yang benar
-        Kuitansi temp = dataKuitansi[i + 1];
-        dataKuitansi[i + 1] = dataKuitansi[high];
-        dataKuitansi[high] = temp;
+        swap(dataKuitansi[i + 1], dataKuitansi[high]);
         
         int p = i + 1;
-        quickSort(low, p - 1, kriteria);  // Urutkan kiri pivot
-        quickSort(p + 1, high, kriteria); // Urutkan kanan pivot
+        quickSort(low, p - 1);
+        quickSort(p + 1, high);
     }
 }
 
 // Shell
-void shellSort(int n, int kriteria) {
-    // Kurangi jarak (gap) secara bertahap
+void shellSort(int n) {
+
     for (int gap = n / 2; gap > 0; gap /= 2) {
         for (int i = gap; i < n; i++) {
             Kuitansi temp = dataKuitansi[i];
             int j;
-            for (j = i; j >= gap && compare(dataKuitansi[j - gap], temp, kriteria); j -= gap) {
+            for (j = i; j >= gap && dataKuitansi[j - gap].NoKuitansi > temp.NoKuitansi; j -= gap) {
                 dataKuitansi[j] = dataKuitansi[j - gap];
             }
             dataKuitansi[j] = temp;
@@ -191,7 +188,7 @@ void sortingData() {
         return;
     }
 
-    int alg, kriteria;
+    int alg;
     system("cls");
     cout << "PILIH ALGORITMA SORTING \n"
          << "================================= \n"
@@ -201,38 +198,38 @@ void sortingData() {
          << "4. Merge Sort\n"
          << "5. Quick Sort\n"
          << "6. Shell Sort\n"
+         << "7. Kembali Ke Menu\n"
          << "================================= \n"
          << "Pilih : ";
     cin >> alg;
 
-    system("cls");
-    cout << "URUTKAN BERDASARKAN \n"
-         << "================================= \n"
-         << "1. No. Kuitansi\n"
-         << "2. Tanggal\n"
-         << "3. Nama Toko\n"
-         << "================================= \n"
-         << "Pilih : ";
-    cin >> kriteria;
+    if (alg == 7) {
+        return;
+    }
+
+    if (alg < 1 || alg > 6) {
+        cout << "Pilihan algoritma tidak ada!\n";
+        konfirmasi();
+        return;
+    }
 
     cout << "\nData sebelum diurutkan:\n";
     lihatData();
 
-    if (alg == 1) bubbleSort(n, kriteria);
-    else if (alg == 2) selectionSort(n, kriteria);
-    else if (alg == 3) insertionSort(n, kriteria);
-    else if (alg == 4) mergeSort(0, n - 1, kriteria);
-    else if (alg == 5) quickSort(0, n - 1, kriteria);
-    else if (alg == 6) shellSort(n, kriteria);
-    else {
-        cout << "Pilihan algoritma tidak ada!\n";
-        return;
-    }
+    if (alg == 1) bubbleSort(n);
+    else if (alg == 2) selectionSort(n);
+    else if (alg == 3) insertionSort(n);
+    else if (alg == 4) mergeSort(0, n - 1);
+    else if (alg == 5) quickSort(0, n - 1);
+    else if (alg == 6) shellSort(n);
+
     cout << "\nData berhasil diurutkan!\n";
     lihatData();
+    konfirmasi();
 }
+// Batas Akhir - Thio
 
-// Reni
+// Cari Data - Reni
 void cariDataSequensial(){
     int cari;
     bool found = false;
@@ -245,18 +242,17 @@ void cariDataSequensial(){
 
     cout << "SEQUENSIAL SEARCH \n"
         <<"================================= \n";
-    cout << "NoKuitansi yang anda cari : ";
+    cout << "NoKuitansi yang anda cari (int) : ";
     cin >> cari;
     
-    // n = sizeof(dataKuitansi) / sizeof(dataKuitansi[0]);
     while (!found && i < n)
     {
         if (cari == dataKuitansi[i].NoKuitansi)
         {
-           cout << "Data anda sudah ditemukan ! \n";
+           cout << "\nData anda sudah ditemukan ! \n";
            cout << "No Kuitansi \t: " << dataKuitansi[i].NoKuitansi << endl;
            cout << "Tanggal \t: " << dataKuitansi[i].Tanggal << endl;
-           cout << "Nama Toko \t: " << dataKuitansi[i].NamaToko << endl;
+           cout << "Nama Toko \t: " << dataKuitansi[i].NamaToko << endl << endl;
            found = true;
         }
         else i++;
@@ -265,7 +261,7 @@ void cariDataSequensial(){
     if (i == n)
     {
         cout << "NoKuitansi yang anda cari: " << cari << endl;
-        cout << cari << " tidak ditemukan ! \n";
+        cout << cari << " tidak ditemukan ! \n\n";
     }
 
 }
@@ -279,17 +275,17 @@ void cariDataBinary(){
 
     cout << "BINARY SEARCH \n"
         <<"================================= \n";
-    cout << "NoKuitansi yang anda cari : ";
+    cout << "NoKuitansi yang anda cari (int) : ";
     cin >> cari;
 
-    bubbleSort(n, 1);
+    bubbleSort(n);
     while ((!found) && (i <= j)){
         k = (i + j) / 2;
         if (cari == dataKuitansi[k].NoKuitansi){
-            cout << "Data anda sudah ditemukan ! \n";
+           cout << "\nData anda sudah ditemukan ! \n";
            cout << "No Kuitansi \t: " << dataKuitansi[k].NoKuitansi << endl;
            cout << "Tanggal \t: " << dataKuitansi[k].Tanggal << endl;
-           cout << "Nama Toko \t: " << dataKuitansi[k].NamaToko << endl;
+           cout << "Nama Toko \t: " << dataKuitansi[k].NamaToko << endl << endl;
            found = true;
         }
         else 
@@ -303,87 +299,82 @@ void cariDataBinary(){
     if (!found)
     {
         cout << "NoKuitansi yang anda cari: " << cari << endl;
-        cout << cari << " tidak ditemukan ! \n";
+        cout << cari << " tidak ditemukan ! \n\n";
     }
 }
 
+void cariData() {
+    int pilihSearching;
+    cout<< " MENU SEARCHING : \n ";
+    cout<< "================================= \n ";
+    cout<< " 1. SEQUENSIAL SEARCH \n " 
+        << " 2. BINARY SEARCH \n "
+        << " 3. Kembali ke menu utama \n "
+        <<"================================= \n ";  
+    cout << "Pilih : ";
+    cin >> pilihSearching;
+    switch (pilihSearching){
+        case 1:
+        cariDataSequensial();
+        break;
+
+        case 2:
+        cariDataBinary();
+        break;
+
+        case 3:
+        break;
+
+        default:
+        cout << "maaf pilihan yang anda pilih tidak tersedia ! ";
+        break;
+    }
+    konfirmasi();
+}
+// Batas Akhir - Reni
+
 int main() {
     int pilih;
-    char y;
-    int pilihSearching;
-    bool kembaliMenuUtama = true;
 
-    do{
-    cout<<"MENU : \n"
+    while (y) {
+        cout<<"MENU : \n"
         <<"================================= \n";
-    cout<<"1. Input Data \n"
+        cout<<"1. Input Data \n"
         <<"2. Tampil Data \n"
         <<"3. Searching \n" //sequential, binary
-        <<"4. Sorting \n"
+        <<"4. Sorting \n" //bubble, selection, insertion, merge, quick, shell
         <<"5. Exit \n"
         <<"================================= \n";
-    cout<<"Pilih : ";
-    cin>>pilih;
+        cout<<"Pilih : ";
+        cin>>pilih;
     
-    switch (pilih){
-    case 1:
-    inputData();
-    break;
+        switch (pilih){
+        case 1:
+        inputData();
+        break;
     
-    case 2:
-    lihatData();
-    break;
+        case 2:
+        lihatData();
+        konfirmasi();
+        break;
     
-    case 3:
-        cout<< " MENU SEARCHING : \n ";
-        cout<< "================================= \n ";
-        cout<< " 1. SEQUENSIAL SEARCH \n " 
-            << " 2. BINARY SEARCH \n "
-            << " 3. kembali ke menu utama \n "
-            <<"================================= \n ";  
-        cout << "Pilih : ";
-        cin >> pilihSearching;
-        switch (pilihSearching){
-            case 1:
-            cariDataSequensial();
-            break;
+        case 3:
+        cariData();
+        break;
 
-            case 2:
-            cariDataBinary();
-            break;
+        case 4:
+        sortingData();
+        break;
 
-            case 3:
-        
-            break;
+        case 5:
+        y = false;
+        cout << "Terima kasih telah menggunakan program ini!\n";
+        break;
 
-            default:
-            cout << "maaf pilihan yang anda pilih tidak tersedia ! ";}
-            break;
-
-    case 4:
-    sortingData();
-    break;
-
-    case 5:
-    kembaliMenuUtama = false;
-    break;
-
-    default:
-    cout<<"Maaf tidak ada pilihan yang sesuai anda pilih !";
-    break;
-    }
-
-    if (kembaliMenuUtama == true)  {
-        cout<<"Apakah anda ingin mengulang ? (y/t) : ";
-        cin>>y;
-
-        if(y != 'y' && y != 'Y') {
-            cout << "Terima kasih !";
-            kembaliMenuUtama = false;
+        default:
+        cout<<"Maaf, pilihan yang anda pilih tidak tersedia!\n";
+        konfirmasi();
+        break;
         }
     }
-
-    } while (kembaliMenuUtama == true);
-    cout << "Terima kasih !";
-    
 }
