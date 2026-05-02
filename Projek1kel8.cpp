@@ -12,7 +12,7 @@ typedef struct{
 }Kuitansi;
 Kuitansi dataKuitansi[100];
 
-// Konfirmasi - Thio
+// Konfirmasi - Ino
 void konfirmasi() {
     char konfirmasi;
     cout << "Apakah anda ingin mengulang ? (y/t) : ";
@@ -24,7 +24,7 @@ void konfirmasi() {
         y = false;
     }
 }
-// Batas Akhir - Thio
+// Batas Akhir - Ino
 
 // Input Data + Lihat Data - Isnan
 void inputData(){
@@ -72,7 +72,7 @@ cout<<"==================================================== \n";
 }
 // Batas Akhir - Isnan
 
-// Sorting Data - Thio
+// Sorting Data - Ino
 // Bubble
 void bubbleSort(int n) {
 
@@ -227,7 +227,7 @@ void sortingData() {
     lihatData();
     konfirmasi();
 }
-// Batas Akhir - Thio
+// Batas Akhir - Ino
 
 // Cari Data - Reni
 void cariDataSequensial(){
