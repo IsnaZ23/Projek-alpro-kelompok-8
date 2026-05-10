@@ -36,6 +36,24 @@ int loadData(string nf) {
     return jumlahData;
 }
 
+void simpanUlang(string namaFile, int n){
+    ofstream fileTulis(namaFile);
+    if (fileTulis.is_open()){
+        for (int i = 0; i < n; i++){
+            fileTulis << "Data ke-" << i + 1 << endl;
+            fileTulis << " No Kuitansi : " << kuin[i].noKuitansi << endl;
+            fileTulis << " Tanggal    : " << kuin[i].tanggal << endl;
+            fileTulis << " Nama Toko : " << kuin[i].namaToko << endl << endl;
+        }
+        fileTulis.close();
+        cout << "Data berhasil disimpan ke " << namaFile << "!\n";
+    } else {
+        cout << "Gagal membuka atau membuat file!\n";
+
+        }
+    }
+
+
 void shellSort(int n) {
     for (int gap = n/2; gap > 0; gap /= 2) {
         for (int i = gap; i < n; i++) {
@@ -239,6 +257,138 @@ void Searching(){
 
 }
 
+void operasiFile(){
+    string namafileOperasi;
+    int pilihUpdate;
+
+    cout << "\nOPERASI FILE\n";
+    cout << "==================================\n"
+        << "1. Update Data (ubah isi data) \n"
+        << "2. Ingin kembali ke menu utama ? (y/t) \n"
+        << "==================================\n"
+        << "Pilih (1-2) : ";
+    cin >> pilihUpdate;
+
+    if (pilihUpdate == 2) return;
+    if (pilihUpdate != 1) {
+        cout << "Pilihan yang anda masukkan tidak valid!\n";
+        return;
+    }
+
+    cout << "\nDaftar File : \n"
+        << "==================================\n";
+    int statusFolder = system("cmd /c dir /b *.txt 2>nul");
+    cout << "==================================\n";
+    cout << "Nama file yang akan di update : ";
+    getline(cin >> ws, namafileOperasi);
+
+    int n = loadData(namafileOperasi);
+    if (n == 0) {
+        cout << "File yang anda cari tidak ditemukan atau kosong!\n";
+        return;
+    }
+
+    //Tampilan data sebelum di update
+    cout << "\nData sebelum di update :\n";
+    cout << "==========================================================\n";
+    cout << left << setw(5) << "NO"
+        << left << setw(18) << "NO KUITANSI"
+        << left << setw(15) << "TANGGAL"
+        << left << setw(2) << "NAMA TOKO" << endl;
+    cout << "===========================================================\n";
+
+    for (int i = 0; i < n; i++) {
+        cout << left << setw(5) << i + 1
+            << left << setw(18) << kuin[i].noKuitansi
+            << left << setw(15) << kuin[i].tanggal
+            << left << setw(2) << kuin[i].namaToko << endl;
+    }
+    cout << "===========================================================\n";
+
+    string targetUpdate;
+    cout << "\nMasukkan No Kuitansi yang ingin di update : ";
+    getline(cin >> ws, targetUpdate);
+
+    int indexDitemukan = -1;
+    for (int i = 0; i < n; i++) {
+        if (kuin[i].noKuitansi == targetUpdate) {
+            indexDitemukan = i;
+            break;
+
+        }
+    }
+
+    if (indexDitemukan == -1) {
+        cout << "Data dengan No Kuitansi \" " << targetUpdate << " \" tidak ditemukan!\n";
+        return;
+    }
+
+    cout << "\nData yang akan di update : \n";
+    cout << "==========================================================\n";
+    cout << "No Kuitansi : " << kuin[indexDitemukan].noKuitansi << endl;
+    cout << "Tanggal    : " << kuin[indexDitemukan].tanggal << endl;
+    cout << "Nama Toko : " << kuin[indexDitemukan].namaToko << endl;
+    cout << "==========================================================\n";
+
+    int pilihanfield;
+    cout << "\npilih field yang ingin di update : \n"
+        << "==================================\n"
+        << "1. No Kuitansi \n"
+        << "2. Tanggal\n"
+        << "3. Nama Toko\n"
+        << "4. Ubah semua field\n"
+        << "==================================\n"
+        << "pilih (1-4) : ";
+    cin >> pilihanfield;
+
+    switch (pilihanfield) {
+        case 1:{
+            string baru;
+            cout << "Masukkan No Kuitansi baru : ";
+            getline(cin >> ws, baru);
+            kuin[indexDitemukan].noKuitansi = baru;
+            break;
+        }
+        case 2:{
+            string baru;
+            cout << "Masukkan tanggal baru : ";
+            getline(cin >> ws, baru);
+            kuin[indexDitemukan].tanggal = baru;
+            break;
+        }
+        case 3: {
+            string baru;
+            cout << "Masukkan nama toko baru :";
+            getline(cin >> ws, baru);
+            kuin[indexDitemukan].namaToko = baru;
+            break;
+        }
+        case 4: {
+            cout << "Masukkan no kuitansi baru : ";
+            getline(cin >> ws, kuin[indexDitemukan].noKuitansi);
+            cout << "Masukkan tanggal baru :";
+            getline(cin >> ws, kuin[indexDitemukan].tanggal);
+            cout << "Masukkan nama toko baru :";
+            getline(cin >> ws, kuin[indexDitemukan].namaToko);
+            break;
+        }
+        default:
+            cout << "Pilihan yang anda masukkan tidak valid!\n";
+            return;
+
+        }
+
+        simpanUlang(namafileOperasi, n);
+
+        cout << "\nData berhadil di Update!\n";
+        cout << "==========================================================\n";
+        cout << "No Kuintansi : " << kuin[indexDitemukan].noKuitansi << endl;
+        cout << "Tanggal    : " << kuin[indexDitemukan].tanggal << endl;
+        cout << "Nama Toko : " << kuin[indexDitemukan].namaToko << endl;
+        cout << "==========================================================\n";
+
+    }
+
 
 int main() {
     int pilih;
@@ -263,6 +413,9 @@ do {
             case 4:
                 //sortingData; //Miawwww
             break;
+            case 5:
+                operasiFile(); 
+                break;
             case 6:
                 cout << "Keluar dari program...\n"
                      << "Terimakasih ! \n";

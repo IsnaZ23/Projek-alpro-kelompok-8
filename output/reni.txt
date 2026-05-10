@@ -1,0 +1,10 @@
+Data ke-1
+ No Kuitansi : 123
+ Tanggal    : 23
+ Nama Toko : re
+
+Data ke-2
+ No Kuitansi : 124
+ Tanggal    : 3
+ Nama Toko : ri
+
