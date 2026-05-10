@@ -260,7 +260,9 @@ do {
             case 3:
                 Searching();
             break;
-
+            case 4:
+                //sortingData; //Miawwww
+            break;
             case 6:
                 cout << "Keluar dari program...\n"
                      << "Terimakasih ! \n";
