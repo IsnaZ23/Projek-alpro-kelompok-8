@@ -1,10 +1,20 @@
 Data ke-1
- No Kuitansi : 123
- Tanggal    : 23
- Nama Toko : re
+ No Kuitansi : 122
+ Tanggal    : 21
+ Nama Toko : bf fb
 
 Data ke-2
+ No Kuitansi : 123
+ Tanggal    : 2
+ Nama Toko : re
+
+Data ke-3
  No Kuitansi : 124
  Tanggal    : 3
  Nama Toko : ri
+
+Data ke-4
+ No Kuitansi : 23
+ Tanggal    : 321
+ Nama Toko : nf og
 
