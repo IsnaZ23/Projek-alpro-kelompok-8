@@ -53,7 +53,6 @@ void simpanUlang(string namaFile, int n){
         }
     }
 
-
 void shellSort(int n) {
     for (int gap = n/2; gap > 0; gap /= 2) {
         for (int i = gap; i < n; i++) {
@@ -64,6 +63,107 @@ void shellSort(int n) {
             }
             kuin[j] = temp;
         }
+    }
+}
+
+void bubbleSort(int n) {
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            if (kuin[j].noKuitansi > kuin[j + 1].noKuitansi) {
+                Kuitansi temp = kuin[j];
+                kuin[j] = kuin[j + 1];
+                kuin[j + 1] = temp;
+            }
+        }
+    }
+}
+
+void selectionSort(int n) {
+    for (int i = 0; i < n - 1; i++) {
+        int minIdx = i;
+        for (int j = i + 1; j < n; j++) {
+            if (kuin[j].noKuitansi < kuin[minIdx].noKuitansi) {
+                minIdx = j;
+            }
+        }
+        Kuitansi temp = kuin[i];
+        kuin[i] = kuin[minIdx];
+        kuin[minIdx] = temp;
+    }
+}
+
+void insertionSort(int n) {
+    for (int i = 1; i < n; i++) {
+        Kuitansi key = kuin[i];
+        int j = i - 1;
+        while (j >= 0 && kuin[j].noKuitansi > key.noKuitansi) {
+            kuin[j + 1] = kuin[j];
+            j = j - 1;
+        }
+        kuin[j + 1] = key;
+    }
+}
+
+int partition(int low, int high) {
+    string pivot = kuin[high].noKuitansi;
+    int i = (low - 1);
+    for (int j = low; j <= high - 1; j++) {
+        if (kuin[j].noKuitansi < pivot) {
+            i++;
+            Kuitansi temp = kuin[i];
+            kuin[i] = kuin[j];
+            kuin[j] = temp;
+        }
+    }
+    Kuitansi temp = kuin[i + 1];
+    kuin[i + 1] = kuin[high];
+    kuin[high] = temp;
+    return (i + 1);
+}
+
+void quickSort(int low, int high) {
+    if (low < high) {
+        int pi = partition(low, high);
+        quickSort(low, pi - 1);
+        quickSort(pi + 1, high);
+    }
+}
+
+void merge(int l, int m, int r) {
+    int n1 = m - l + 1;
+    int n2 = r - m;
+    Kuitansi L[20], R[20];
+    for (int i = 0; i < n1; i++) L[i] = kuin[l + i];
+    for (int j = 0; j < n2; j++) R[j] = kuin[m + 1 + j];
+    int i = 0, j = 0, k = l;
+    while (i < n1 && j < n2) {
+        if (L[i].noKuitansi <= R[j].noKuitansi) {
+            kuin[k] = L[i];
+            i++;
+        } else {
+            kuin[k] = R[j];
+            j++;
+        }
+        k++;
+    }
+    while (i < n1) {
+        kuin[k] = L[i];
+        i++;
+        k++;
+    }
+    while (j < n2) {
+        kuin[k] = R[j];
+        j++;
+        k++;
+    }
+}
+
+void mergeSort(int l, int r) {
+    if (l < r) {
+        int m = l + (r - l) / 2;
+        mergeSort(l, m);
+        mergeSort(m + 1, r);
+        merge(l, m, r);
     }
 }
 
@@ -389,6 +489,81 @@ void operasiFile(){
 
     }
 
+void simpanSort(string nf, int n) {
+    char pilih;
+    cout << "\nIngin menyimpan hasil pengurutan ke file ? (y/t) : ";
+    cin >> pilih; cin.ignore();
+
+    if(pilih == 'y' || pilih == 'Y') {
+        simpanUlang(nf, n);
+    }
+}
+
+void sortingData() {
+    string nf;
+    cout << "\nSORTING DATA\n";
+    cout << "==================\n";
+    cout << "Daftar File : \n";
+    system("cmd /c dir /b *.txt 2>nul");
+    cout << "==================\n";
+    cout << "Pilih file yang akan diurutkan : ";
+    getline(cin >> ws, nf);
+
+    int n = loadData(nf);
+    if (n == 0) {
+        cout << "Gagal! File tidak ditemukan atau kosong.\n";
+        return;
+    }
+
+    int pilih;
+    bool ulangSort = true;
+
+    while (ulangSort) {
+        cout << "\nMenu Sorting (File: " << nf << ")\n";
+        cout << "==================\n";
+        cout << "1. Bubble Sort\n";
+        cout << "2. Selection Sort\n";
+        cout << "3. Insertion Sort\n";
+        cout << "4. Shell Sort\n";
+        cout << "5. Quick Sort\n";
+        cout << "6. Merge Sort\n";
+        cout << "7. Kembali ke Menu Utama\n";
+        cout << "==================\n";
+        cout << "Pilih : ";
+        cin >> pilih; cin.ignore();
+
+        if (pilih == 7) {
+            ulangSort = false;
+            continue;
+        }
+
+        switch (pilih) {
+            case 1: bubbleSort(n); break;
+            case 2: selectionSort(n); break;
+            case 3: insertionSort(n); break;
+            case 4: shellSort(n); break;
+            case 5: quickSort(0, n - 1); break;
+            case 6: mergeSort(0, n - 1); break;
+            default: cout << "Pilihan tidak valid!\n"; continue;
+        }
+    
+        cout << "\nData setelah diurutkan :\n";
+        cout << "======================================================\n";
+        cout << left << setw(18) << "NO KUITANSI" 
+             << left << setw(15) << "TANGGAL" 
+             << left << setw(2)  <<"NAMA TOKO" << endl;
+        cout << "======================================================\n";
+        for (int i = 0; i < n; i++) {
+            cout << left << setw(18) << kuin[i].noKuitansi
+                 << left << setw(15) << kuin[i].tanggal
+                 << left << setw(2)  << kuin[i].namaToko << endl;
+        }
+        cout << "======================================================\n";
+
+        simpanSort(nf, n);
+    }
+}
+
 
 int main() {
     int pilih;
@@ -411,7 +586,7 @@ do {
                 Searching();
             break;
             case 4:
-                //sortingData; //Miawwww
+                sortingData();
             break;
             case 5:
                 operasiFile(); 
