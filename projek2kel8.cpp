@@ -599,6 +599,14 @@ void sortingData() {
         cout << "======================================================\n";
 
         simpanSort(nf, n);
+
+        char tampil;
+        cout << "\nApakah ingin menampilkan data setelah diurutkan? (y/t) : ";
+        cin >> tampil;
+        
+        if (tampil == 'y' || tampil == 'Y') {
+            tampilData();
+        }
     }
 }
 
